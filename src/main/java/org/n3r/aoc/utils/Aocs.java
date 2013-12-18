@@ -1,16 +1,20 @@
 package org.n3r.aoc.utils;
 
+import com.google.common.base.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.joor.Reflect;
-import org.n3r.aoc.ConfigLoadable;
+import org.n3r.aoc.AocContext;
+import org.n3r.aoc.PropertiesAware;
+import org.n3r.aoc.SimpleConfigAware;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 public class Aocs {
     public static Properties loadClasspathProperties(String resourceName) {
-        InputStream is = getClasspathResourceInputStream(resourceName);
+        InputStream is = classResourceToInputStream(resourceName, false);
         Properties properties = new Properties();
         try {
             properties.load(is);
@@ -22,33 +26,56 @@ public class Aocs {
         return properties;
     }
 
-    public static InputStream getClasspathResourceInputStream(String resourceName) {
-        InputStream is = Aocs.class.getClassLoader().getResourceAsStream(resourceName);
-        if (is == null) {
-            throw new RuntimeException(resourceName + " is not available from classpath");
-        }
-        return is;
+    /**
+     * Return the context classloader. BL: if this is command line operation, the classloading issues are more sane.
+     * During servlet execution, we explicitly set the ClassLoader.
+     *
+     * @return The context classloader.
+     */
+    public static ClassLoader getClassLoader() {
+        return Objects.firstNonNull(
+                Thread.currentThread().getContextClassLoader(),
+                Aocs.class.getClassLoader());
     }
 
-    public static <T> T loadObject(Properties properties, String config) {
+    public static InputStream classResourceToInputStream(String pathname, boolean silent) {
+        InputStream is = classResourceToStream(pathname);
+        if (is != null || silent) return is;
+
+        throw new RuntimeException("fail to find " + pathname + " in classpath");
+    }
+
+    public static InputStream classResourceToStream(String resourceName) {
+        return getClassLoader().getResourceAsStream(resourceName);
+    }
+
+    public static <T> T loadObject(Properties rootProperties, Properties properties, String config) {
         String classNameWithPrefix = config;
         if (classNameWithPrefix.startsWith("@")) classNameWithPrefix = classNameWithPrefix.substring(1);
         int leftBracketPos = classNameWithPrefix.indexOf('(');
-        String clasName;
+        String className;
         String prefix;
         if (leftBracketPos > 0) {
             int rightBracketPos = classNameWithPrefix.indexOf(')', leftBracketPos);
             if (rightBracketPos < 0) throw new RuntimeException("there is no matched brackets in " + config);
-            clasName = classNameWithPrefix.substring(0, leftBracketPos);
+            className = classNameWithPrefix.substring(0, leftBracketPos);
             prefix = classNameWithPrefix.substring(leftBracketPos + 1, rightBracketPos);
         } else {
-            clasName = classNameWithPrefix;
+            className = classNameWithPrefix;
             prefix = "";
         }
 
-        T obj = Reflect.on(clasName).create().get();
-        if (obj instanceof ConfigLoadable) {
-            ((ConfigLoadable)obj).loadConfig(subProperties(properties, prefix));
+        String aliasKey = "alias." + className;
+        if (rootProperties.containsKey(aliasKey)) {
+            className = rootProperties.getProperty(aliasKey);
+        }
+
+        T obj = Reflect.on(className).create().get();
+        if (obj instanceof PropertiesAware) {
+            ((PropertiesAware) obj).setProperties(rootProperties, subProperties(properties, prefix));
+        }
+        if (obj instanceof SimpleConfigAware) {
+            ((SimpleConfigAware) obj).setSimpleConfig(prefix);
         }
 
         return obj;
@@ -60,7 +87,7 @@ public class Aocs {
         Properties newProperties = new Properties();
         String fullPrefix = prefix + ".";
         int prefixSize = fullPrefix.length();
-        for(String key : properties.stringPropertyNames()) {
+        for (String key : properties.stringPropertyNames()) {
             if (key.indexOf(fullPrefix) == 0) {
                 String newKey = key.substring(prefixSize);
                 if (StringUtils.isEmpty(newKey)) continue;
@@ -71,4 +98,38 @@ public class Aocs {
 
         return newProperties;
     }
+
+    /**
+     * Create a temporary file
+     */
+    public static File tempFile() {
+        File f;
+        try {
+            f = File.createTempFile("aoc", ".tmp");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        f.deleteOnExit();
+        return f;
+    }
+
+    public static void sleepMilis(long mills) {
+        try {
+            Thread.sleep(mills);
+        } catch (InterruptedException e) {
+            // ignore
+        }
+    }
+
+
+    public static void checkRequired(String ftpHost, String name) {
+        if (StringUtils.isNotEmpty(ftpHost)) return;
+
+        throw new RuntimeException(name + " is requied");
+    }
+
+    public static String substitute(AocContext aocContext, String before) {
+        return Substituters.parse(before, aocContext.getAocContext());
+    }
+
 }

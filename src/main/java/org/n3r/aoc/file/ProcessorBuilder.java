@@ -1,6 +1,7 @@
 package org.n3r.aoc.file;
 
 import org.apache.commons.lang3.StringUtils;
+import org.n3r.aoc.AocContext;
 import org.n3r.aoc.utils.Aocs;
 
 import java.util.Properties;
@@ -9,12 +10,7 @@ public class ProcessorBuilder {
     private Input input;
     private Filter filter;
     private Output output;
-
-    public ProcessorBuilder fromClasspathProperties(String classpathProperties) {
-        Properties config = Aocs.loadClasspathProperties(classpathProperties);
-
-        return fromProperties(config);
-    }
+    private AocContext aocContext;
 
     public ProcessorBuilder fromProperties(Properties config) {
         input = loadInput(config);
@@ -30,7 +26,7 @@ public class ProcessorBuilder {
             throw new RuntimeException("output is not defined in properties.");
         }
 
-        return Aocs.loadObject(config, outputConfig);
+        return Aocs.loadObject(config, config, outputConfig);
     }
 
     private Filter loadFilter(Properties config) {
@@ -39,7 +35,7 @@ public class ProcessorBuilder {
             throw new RuntimeException("filter is not defined in properties.");
         }
 
-        return Aocs.loadObject(config, filterConfig);
+        return Aocs.loadObject(config, config, filterConfig);
     }
 
     private Input loadInput(Properties config) {
@@ -48,10 +44,15 @@ public class ProcessorBuilder {
             throw new RuntimeException("input is not defined in properties file.");
         }
 
-        return Aocs.loadObject(config, inputConfig);
+        return Aocs.loadObject(config, config, inputConfig);
     }
 
     public Processor build() {
-        return new Processor(input, filter, output);
+        return new Processor(input, filter, output, aocContext);
+    }
+
+    public ProcessorBuilder aocContext(AocContext aocContext) {
+        this.aocContext = aocContext;
+        return this;
     }
 }

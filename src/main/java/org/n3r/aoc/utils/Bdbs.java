@@ -67,7 +67,7 @@ public class Bdbs {
         return put(db, toBytes(key), toBytes(value));
     }
 
-    private static byte[] toBytes(String value) {
+    public static byte[] toBytes(String value) {
         return value == null ? new byte[0] : value.getBytes(Charsets.UTF_8);
     }
 
