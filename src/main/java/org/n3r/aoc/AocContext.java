@@ -11,9 +11,19 @@ public class AocContext {
     public static final String CHECK_DAY = "checkDay";
     // checked order type.
     public static final String ORDER_TYPE = "orderType";
+    // batch no.
+    public static final String BATCH_NO = "batchNo";
 
     public void put(String contextKey, String contextValue) {
         context.put(contextKey, contextValue);
+    }
+
+    public void setBatchNo(String batchNo) {
+        context.put(BATCH_NO, batchNo);
+    }
+
+    public String getBatchNo() {
+        return context.get(BATCH_NO);
     }
 
     public String getCheckDay() {
@@ -34,5 +44,10 @@ public class AocContext {
 
     public Map<String, String> getAocContext() {
         return context;
+    }
+
+    @Override
+    public String toString() {
+        return context.toString();
     }
 }

@@ -38,7 +38,7 @@ public class SimpleTest {
 
         AocContext aocContext = new AocContext();
 
-        Processor processor = new ProcessorBuilder().fromProperties(config).aocContext(aocContext).build();
+        Processor processor = Processor.fromProperties(config).aocContext(aocContext);
 
         processor.process();
 
@@ -59,7 +59,7 @@ public class SimpleTest {
 
         config.put("output", "@" + DirectOutput.class.getName());
 
-        Processor processor = new ProcessorBuilder().fromProperties(config).build();
+        Processor processor = Processor.fromProperties(config);
 
         processor.process();
 
@@ -84,7 +84,7 @@ public class SimpleTest {
         String dbName = TestUtils.randomString(10);
         config.put("bdb.dbname", dbName);
 
-        Processor processor = new ProcessorBuilder().fromProperties(config).build();
+        Processor processor = Processor.fromProperties(config);
 
         processor.process();
 
@@ -127,7 +127,7 @@ public class SimpleTest {
         AocContext aocContext = new AocContext();
         aocContext.setCheckDay("20131217");
 
-        Processor processor = new ProcessorBuilder().fromProperties(config).aocContext(aocContext).build();
+        Processor processor = Processor.fromProperties(config).aocContext(aocContext);
         processor.process();
 
         DirectOutput output = (DirectOutput) processor.output();

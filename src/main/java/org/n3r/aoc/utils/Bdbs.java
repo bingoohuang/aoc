@@ -83,7 +83,7 @@ public class Bdbs {
         return bytes != null ? toStr(bytes) : null;
     }
 
-    private static String toStr(byte[] bytes) {
+    public static String toStr(byte[] bytes) {
         return bytes.length == 0 ? null : new String(bytes, Charsets.UTF_8);
     }
 

@@ -116,9 +116,9 @@ public abstract class Substituters {
                     throw new RuntimeException("Circular PlaceHolder reference '"
                             + holder + "' in property definitions");
                 }
-                // Recursive invocation, parsing Holders contained in the Holder key.
+                // Recursive invocation, parsing Holders contained in the Holder keyValue.
                 holder = parse(holder, props, visitedHolders, ignoreBadHolders);
-                // Now obtain the value for the fully resolved key...
+                // Now obtain the value for the fully resolved keyValue...
                 String propVal = resolveHolder(holder, props, SYS_PROPS_MODE_FALLBACK, defValue);
                 if (propVal != null) {
                     // Recursive invocation, parsing Holders contained in the
@@ -219,8 +219,8 @@ public abstract class Substituters {
 
     /**
      * Resolve the given Holder using the given properties.
-     * The default implementation simply checks for a corresponding property key.
-     * <p>Subclasses can override this for customized Holder-to-key mappings
+     * The default implementation simply checks for a corresponding property keyValue.
+     * <p>Subclasses can override this for customized Holder-to-keyValue mappings
      * or custom resolution strategies, possibly just using the given properties
      * as fallback.
      * <p>Note that system properties will still be checked before respectively
@@ -245,9 +245,9 @@ public abstract class Substituters {
     }
 
     /**
-     * Resolve the given key as JVM system property, and optionally also as
+     * Resolve the given keyValue as JVM system property, and optionally also as
      * system environment variable if no matching system property has been found.
-     * @param key the Holder to resolve as system property key
+     * @param key the Holder to resolve as system property keyValue
      * @return the system property value, or <code>null</code> if not found
      * @see System#getProperty(String)
      * @see System#getenv(String)

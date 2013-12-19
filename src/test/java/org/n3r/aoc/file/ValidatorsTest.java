@@ -34,7 +34,7 @@ public class ValidatorsTest {
 
         config.put("output", "@" + DirectOutput.class.getName());
 
-        Processor processor = new ProcessorBuilder().fromProperties(config).build();
+        Processor processor = Processor.fromProperties(config);
 
         processor.process();
 
@@ -63,7 +63,7 @@ public class ValidatorsTest {
 
         config.put("output", "@" + DirectOutput.class.getName());
 
-        Processor processor = new ProcessorBuilder().fromProperties(config).build();
+        Processor processor = Processor.fromProperties(config);
 
         processor.process();
     }

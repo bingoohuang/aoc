@@ -3,7 +3,7 @@ package org.n3r.aoc.check;
 /**
  * Difference State.
  */
-public enum DiffState {
+public enum DiffMode {
     /**
      * Order only exists on left data.
      */
@@ -24,7 +24,7 @@ public enum DiffState {
 
     private final String name;
 
-    DiffState(String name) {
+    DiffMode(String name) {
         this.name = name;
     }
 

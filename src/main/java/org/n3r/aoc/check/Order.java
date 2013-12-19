@@ -5,14 +5,10 @@ package org.n3r.aoc.check;
  */
 public interface Order {
     /**
-     * the key of the order.
-     * @return order key.
+     * the keyValue of the order.
+     * @return order keyValue.
      */
-    String key();
+    String keyValue();
 
-    /**
-     * the detail of the order.
-     * @return order detail.
-     */
-    <T> T detail();
+    Object fieldValue(String fieldName);
 }

@@ -1,13 +1,14 @@
 package org.n3r.aoc.check;
 
-import java.io.Closeable;
+import org.n3r.aoc.LifeCycle;
 
 /**
  * Right side of checked orders.
  */
-public interface Right extends Closeable {
+public interface Right extends LifeCycle {
     /**
      * Next order.
+     *
      * @return null if there is no more.
      */
     Order next();

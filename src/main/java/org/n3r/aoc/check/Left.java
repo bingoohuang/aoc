@@ -1,21 +1,24 @@
 package org.n3r.aoc.check;
 
-import java.io.Closeable;
+import org.n3r.aoc.LifeCycle;
+
 import java.util.Collection;
 
 /**
  * Left of checked orders.
  */
-public interface Left extends Closeable {
+public interface Left extends LifeCycle {
     /**
      * pop up an order.
-     * @param key order key
+     *
+     * @param keyValue order keyValue
      * @return null if no more orders are available.
      */
-    Order pop(String key);
+    Order pop(String keyValue);
 
     /**
      * pop up all remains orders.
+     *
      * @return orders.
      */
     Collection<Order> popAll();

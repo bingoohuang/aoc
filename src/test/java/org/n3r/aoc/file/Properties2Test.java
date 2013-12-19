@@ -14,7 +14,7 @@ public class Properties2Test {
     public void test() {
         Properties config = Aocs.loadClasspathProperties("org/n3r/aoc/file/test2.properties");
 
-        Processor processor = new ProcessorBuilder().fromProperties(config).build();
+        Processor processor = Processor.fromProperties(config);
         processor.process();
 
         DirectOutput output = (DirectOutput) processor.output();

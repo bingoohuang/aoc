@@ -6,10 +6,15 @@ import org.joor.Reflect;
 import org.n3r.aoc.AocContext;
 import org.n3r.aoc.PropertiesAware;
 import org.n3r.aoc.SimpleConfigAware;
+import org.n3r.aoc.check.impl.order.RecordOrder;
+import org.n3r.eql.util.EqlUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class Aocs {
@@ -132,4 +137,15 @@ public class Aocs {
         return Substituters.parse(before, aocContext.getAocContext());
     }
 
+    public static RecordOrder mapRow(ResultSet rs, int rowNum)  throws SQLException {
+            ResultSetMetaData metaData = rs.getMetaData();
+            Object[] fieldsValue = new Object[metaData.getColumnCount()];
+            String[] fieldsName = new String[metaData.getColumnCount()];
+            for (int i = 0, ii = metaData.getColumnCount(); i < ii; ++i) {
+                fieldsName[i] = EqlUtils.lookupColumnName(metaData, i + 1);
+                fieldsValue[i] = EqlUtils.getResultSetValue(rs, i + 1);
+            }
+
+            return new RecordOrder(fieldsValue, fieldsName, null);
+    }
 }

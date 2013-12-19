@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import static org.n3r.aoc.utils.Aocs.checkRequired;
@@ -22,11 +23,17 @@ public class FileOutput implements Output, SimpleConfigAware {
 
     private FileOutputStream fos;
     private PrintStream ps;
+    private String charset = "UTF-8";
 
     @Override
     public void write(AocContext aocContext, List<String> toFieldsValue) {
+        writeFieldsName(toFieldsValue);
+    }
+
+    @Override
+    public void writeFieldsName(List<String> toFieldNames) {
         boolean firstField = true;
-        for (String field : toFieldsValue) {
+        for (String field : toFieldNames) {
             if (!firstField) ps.print(',');
             else firstField = false;
 
@@ -36,18 +43,13 @@ public class FileOutput implements Output, SimpleConfigAware {
     }
 
     @Override
-    public void writeFieldsName(List<String> toFieldNames) {
-
-    }
-
-    @Override
     public void startup(AocContext aocContext) {
         this.realFile = substitute(aocContext, file);
         logger.info("startup with {}", realFile);
 
         try {
-            fos = new FileOutputStream(file);
-            ps = new PrintStream(fos);
+            fos = new FileOutputStream(realFile);
+            ps = new PrintStream(fos, false, charset);
         } catch (Exception e) {
             logger.error("error to open file {} for write", realFile, e);
             throw Throwables.propagate(e);

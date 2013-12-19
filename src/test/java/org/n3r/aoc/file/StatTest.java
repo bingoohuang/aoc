@@ -2,8 +2,6 @@ package org.n3r.aoc.file;
 
 import org.junit.Test;
 import org.n3r.aoc.AocContext;
-import org.n3r.aoc.file.Processor;
-import org.n3r.aoc.file.ProcessorBuilder;
 import org.n3r.aoc.file.impl.filter.text.AccumulateStatValidator;
 import org.n3r.aoc.file.impl.filter.text.LineStatValidator;
 import org.n3r.aoc.file.impl.filter.text.TextFileFilter;
@@ -44,7 +42,7 @@ public class StatTest {
 
         AocContext aocContext = new AocContext();
 
-        Processor processor = new ProcessorBuilder().fromProperties(config).aocContext(aocContext).build();
+        Processor processor =  Processor.fromProperties(config).aocContext(aocContext);
 
         processor.process();
 
@@ -80,7 +78,7 @@ public class StatTest {
 
         AocContext aocContext = new AocContext();
 
-        Processor processor = new ProcessorBuilder().fromProperties(config).aocContext(aocContext).build();
+        Processor processor = Processor.fromProperties(config).aocContext(aocContext);
 
         processor.process();
 
