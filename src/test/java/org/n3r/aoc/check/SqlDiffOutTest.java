@@ -19,7 +19,7 @@ public class SqlDiffOutTest {
     public void test1() {
         Properties processorConfig = new Properties();
         processorConfig.put("input", "@" + DirectInput.class.getName() + "(context)");
-        processorConfig.put("context.text", "a,b,101,01\na1,b1,203,01");
+        processorConfig.put("context.text", "a,b,101,01\na1,b1,203,01\na2,b2,300,03");
 
         processorConfig.put("filter", "@" + TextFileFilter.class.getName() + "(text)");
         processorConfig.put("text.data.fields.split", ",");
@@ -49,10 +49,9 @@ public class SqlDiffOutTest {
         checkerConfig.put("bdb.dbpath", dbPath);
         checkerConfig.put("bdb.dbname", dbName);
 
-        checkerConfig.put("right", "@" + DirectRight.class.getSimpleName() + "(ID,PAY,STATE\na,100,00\na1,200,00)");
+        checkerConfig.put("right", "@" + DirectRight.class.getSimpleName() + "(ID,PAY,STATE\na,100,00\na1,200,00\na4,300,00)");
         checkerConfig.put("batchNoCreator", "@" + CurrentTimeMillisBatchNoCreator.class.getSimpleName());
 
-        checkerConfig.put("compareKey", "A:ID");
         checkerConfig.put("compareFields", "C:PAY,D:STATE");
         checkerConfig.put("diffOut", "@" + SqlDiffOut.class.getSimpleName() + "(SqlDiffOut,org/n3r/aoc/checker/AocSqlDiffOut.eql, aoc.diff.detail, aoc.diff.main)");
 

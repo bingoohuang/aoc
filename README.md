@@ -97,3 +97,21 @@ Properties config = Aocs.loadClasspathProperties("org/n3r/aoc/file/checker.prope
 OrderChecker orderChecker = OrderChecker.fromProperties(config);
 orderChecker.check();
 ```
+
+## `org.n3r.aoc.check.impl.diff.SqlDiffOut`比对差异输出到数据库中。
+Oracle数据库建库脚本可以[点击这里](https://github.com/bingoohuang/aoc/blob/master/src/main/resources/org/n3r/aoc/checker/aoc_tabls_ora.sql)。
+差异结果样例:
+> AOC_DIFF
+
+BATCHNO|LOS|ORS|LRS|BAL|TOTALLINE|STARTTIME|ENDTIME|COSTTIME|ACCOUNTDAY|ACCOUNTTYPE
+-------|---|---|---|---|---------|---------|-------|--------|----------|-----------
+20131220100441184|1|1|2|0|4|2013-12-20 10:04:41|2013-12-20 10:04:41|0||
+
+> AOC_DIFF_DETAIL
+BATCHNO|DIFFTYPE|LEFTDATA|RIGHTDATA|DIFF|ORDERNO|DIFFCODE
+-------|--------|--------|---------|----|-------|--------
+20131220100441184|LR|{"A":"a1","C":"203","D":"01"}|{"ID":"a1","PAY":"200","STATE":"00"}|{"C-PAY":"203-200","D-STATE":"01-00"}|a1|11
+20131220100441184|0R||{"ID":"a4","PAY":"300","STATE":"00"}||a4|
+20131220100441184|LR|{"A":"a","C":"101","D":"01"}|{"ID":"a","PAY":"100","STATE":"00"}|{"C-PAY":"101-100","D-STATE":"01-00"}|a|11
+20131220100441184|L0|{"A":"a2","C":"300","D":"03"}|||a2|
+

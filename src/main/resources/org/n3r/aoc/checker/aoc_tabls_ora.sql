@@ -47,8 +47,7 @@ create table AOC_DIFF_DETAIL
   leftdata    VARCHAR2(2000),
   rightdata   VARCHAR2(2000),
   diff        VARCHAR2(1000),
-  leftkey     VARCHAR2(100),
-  rightkey    VARCHAR2(100),
+  orderno         VARCHAR2(100),
   diffCode    VARCHAR2(10)
 );
 
@@ -62,10 +61,8 @@ comment on column AOC_DIFF_DETAIL.rightdata
   is '右边数据类型(json串)';
 comment on column AOC_DIFF_DETAIL.diff
   is '具体的差异描述（字段名对:字段值对）';
-comment on column AOC_DIFF_DETAIL.leftkey
-  is '左边数据的主键';
-comment on column AOC_DIFF_DETAIL.rightkey
-  is '右边数据的主键';
+comment on column AOC_DIFF_DETAIL.orderno
+  is '数据的主键';
 comment on column AOC_DIFF_DETAIL.diffCode
   is '具体的差别,有多少位表示有多少个比较字段，0表示无差异，1表示有差异。比如01，表示共比较了两个字段，第一个无差异，第二有差异';
 -- Create/Recreate indexes

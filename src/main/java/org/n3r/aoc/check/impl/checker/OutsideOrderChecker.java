@@ -23,7 +23,6 @@ public class OutsideOrderChecker extends OrderChecker implements PropertiesAware
     private BatchNoCreator batchNoCreator;
     private Left left;
     private Right right;
-    private Tuple<String, String> compareKey;
     private List<Tuple<String, String>> compareFields;
     private DiffOut diffOut;
 
@@ -73,8 +72,8 @@ public class OutsideOrderChecker extends OrderChecker implements PropertiesAware
             if (equalsTo(leftFieldValue, rightFieldValue)) {
                 diffsCode.append('0');
             } else {
-                diffs.put(createDiffKey(compareKey), createDiff(leftFieldValue, rightFieldValue));
                 diffsCode.append('1');
+                diffs.put(createDiffKey(fieldName), createDiff(leftFieldValue, rightFieldValue));
             }
         }
 
@@ -123,7 +122,6 @@ public class OutsideOrderChecker extends OrderChecker implements PropertiesAware
         parseBatchNoCreator(rootProperties, properties);
         parseLeft(rootProperties, properties);
         parseRight(rootProperties, properties);
-        pareCompareKey(rootProperties, properties);
         pareCompareFields(rootProperties, properties);
         parseDiffOutput(rootProperties, properties);
     }
@@ -140,13 +138,6 @@ public class OutsideOrderChecker extends OrderChecker implements PropertiesAware
         if (isEmpty(config)) throw new RuntimeException("compareFields should be defined");
 
         this.compareFields = parseTuples(config);
-    }
-
-    private void pareCompareKey(Properties rootProperties, Properties properties) {
-        String config = properties.getProperty("compareKey");
-        if (isEmpty(config)) throw new RuntimeException("compareKey should be defined");
-
-        this.compareKey = parseTuple(config);
     }
 
     private List<Tuple<String, String>> parseTuples(String tuples) {

@@ -41,14 +41,14 @@ public class SqlDiffOut implements DiffOut, SimpleConfigAware {
         String batchNo = aocContext.getBatchNo();
         switch (diffMode) {
             case OnlyRight:
-                eql.params(batchNo, "0R", null, right + "", null, null, right.keyValue(), null).execute();
+                eql.params(batchNo, "0R", null, right + "", null, right.keyValue(), null).execute();
                 break;
             case OnlyLeft:
-                eql.params(batchNo, "L0", left + "", null, null, left.keyValue(), null, null).execute();
+                eql.params(batchNo, "L0", left + "", null, null, left.keyValue(), null).execute();
                 break;
             case Diff:
                 eql.params(batchNo, "LR", left + "", right + "", diffs,
-                        left.keyValue(), right.keyValue(), diffsCode).execute();
+                        right.keyValue(), diffsCode).execute();
             case Balance:
                 break;
         }
