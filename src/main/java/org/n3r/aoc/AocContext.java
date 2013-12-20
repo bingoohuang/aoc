@@ -4,6 +4,9 @@ import com.google.common.collect.Maps;
 
 import java.util.Map;
 
+/**
+ * 对账上下文。
+ */
 public class AocContext {
     private Map<String, String> context = Maps.newHashMap();
 

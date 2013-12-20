@@ -41,6 +41,7 @@ public class TextFileFilter implements Filter, PropertiesAware {
     private int minFromFieldsNum = 0;
 
     Logger logger = LoggerFactory.getLogger(TextFileFilter.class);
+    private AocContext aocContext;
 
     @Override
     public void setProperties(Properties rootProperties, Properties properties) {
@@ -105,13 +106,13 @@ public class TextFileFilter implements Filter, PropertiesAware {
     }
 
     @Override
-    public void filter(AocContext aocContext, InputStream is, Output output) {
+    public void filter(InputStream is, Output output) {
         writeFieldsName(output);
 
-        processContent(aocContext, is, output);
+        processContent(is, output);
     }
 
-    private void processContent(AocContext aocContext, InputStream is, Output output) {
+    private void processContent(InputStream is, Output output) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is, charset));
         String line, lastLine = null;
         int lineNo = 1;
@@ -122,13 +123,13 @@ public class TextFileFilter implements Filter, PropertiesAware {
                 continue;
             }
 
-            if (lastLine != null) parseLine(aocContext, output, lastLine, lineNo - 1);
+            if (lastLine != null) parseLine(output, lastLine, lineNo - 1);
             lastLine = line;
         }
 
         if (lastLine != null) {
             if (textStatPos == TextStatPos.last) parseStatLine(lastLine, lineNo);
-            else parseLine(aocContext, output, lastLine, lineNo - 1);
+            else parseLine(output, lastLine, lineNo - 1);
         }
 
         if (textStatPos != TextStatPos.none) validateStat();
@@ -150,7 +151,7 @@ public class TextFileFilter implements Filter, PropertiesAware {
     }
 
 
-    private void parseLine(AocContext aocContext, Output output, String line, int lineNo) {
+    private void parseLine(Output output, String line, int lineNo) {
         List<String> fieldsValue = splitter.splitToList(line);
 
         if (fieldsValue.size() < minFromFieldsNum)
@@ -172,7 +173,7 @@ public class TextFileFilter implements Filter, PropertiesAware {
                 toFieldsValue.add(value);
             }
 
-            output.write(aocContext, toFieldsValue);
+            output.write(toFieldsValue);
 
             accumuteStat(fieldsValueMap);
         } catch (Exception e) {
@@ -212,6 +213,7 @@ public class TextFileFilter implements Filter, PropertiesAware {
 
     @Override
     public void startup(AocContext aocContext) {
+        this.aocContext = aocContext;
         logger.info("startup");
     }
 

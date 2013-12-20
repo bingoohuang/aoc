@@ -85,8 +85,8 @@ public class Processor {
         startup(aocContext);
         InputStream is = null;
         try {
-            is = input.read(aocContext);
-            filter.filter(aocContext, is, output);
+            is = input.read();
+            filter.filter(is, output);
         } catch (Exception e) {
             logger.error("process error", e);
             throw Throwables.propagate(e);

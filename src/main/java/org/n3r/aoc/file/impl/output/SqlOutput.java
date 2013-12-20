@@ -17,7 +17,7 @@ public class SqlOutput implements Output, SimpleConfigAware {
     private String sqlid;
 
     @Override
-    public void write(AocContext aocContext, List<String> toFieldsValue) {
+    public void write(List<String> toFieldsValue) {
         new Eql(configName).useSqlFile(sqlFile).id(sqlid).params(toFieldsValue.toArray(new String[0])).execute();
     }
 

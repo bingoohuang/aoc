@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import static org.n3r.aoc.utils.Aocs.checkRequired;
@@ -26,7 +25,7 @@ public class FileOutput implements Output, SimpleConfigAware {
     private String charset = "UTF-8";
 
     @Override
-    public void write(AocContext aocContext, List<String> toFieldsValue) {
+    public void write(List<String> toFieldsValue) {
         writeFieldsName(toFieldsValue);
     }
 

@@ -16,7 +16,7 @@ public class DirectInput implements Input, PropertiesAware {
 
 
     @Override
-    public InputStream read(AocContext aocContext) {
+    public InputStream read() {
         return IOUtils.toInputStream(directContent);
     }
 

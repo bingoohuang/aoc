@@ -23,7 +23,7 @@ public class BdbOutput implements Output, PropertiesAware {
     Logger logger = LoggerFactory.getLogger(BdbOutput.class);
 
     @Override
-    public void write(AocContext aocContext, List<String> toFieldsValue) {
+    public void write(List<String> toFieldsValue) {
         String key = toFieldsValue.get(0);
         Bdbs.put(database, Bdbs.toBytes(key), toBytes(toFieldsValue));
     }

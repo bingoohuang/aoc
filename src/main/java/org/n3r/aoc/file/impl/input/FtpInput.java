@@ -30,13 +30,14 @@ public class FtpInput implements Input, PropertiesAware {
     private long maxRetryTimeInMillis;
     private long retrySleepTimeInMillis;
     Logger logger = LoggerFactory.getLogger(FtpInput.class);
+    private AocContext aocContext;
 
     @Override
-    public InputStream read(AocContext aocContext) {
-        return getInputStream(aocContext, new FtpDownloader());
+    public InputStream read() {
+        return getInputStream(new FtpDownloader());
     }
 
-    protected InputStream getInputStream(AocContext aocContext, FtpDownloader ftpDownloader) {
+    protected InputStream getInputStream(FtpDownloader ftpDownloader) {
         long startTime = System.currentTimeMillis();
         File local = StringUtils.isNotEmpty(ftpLocal)
                 ? new File(substitute(aocContext, ftpLocal)) : Aocs.tempFile();
@@ -80,6 +81,7 @@ public class FtpInput implements Input, PropertiesAware {
 
     @Override
     public void startup(AocContext aocContext) {
+        this.aocContext = aocContext;
         logger.info("startup {}:{}", ftpHost, ftpPort);
     }
 

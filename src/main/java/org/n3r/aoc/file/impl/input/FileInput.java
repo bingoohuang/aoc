@@ -22,7 +22,7 @@ public class FileInput implements Input, PropertiesAware {
     Logger logger = LoggerFactory.getLogger(FileInput.class);
 
     @Override
-    public InputStream read(AocContext aocContext) {
+    public InputStream read() {
         return inputStream;
     }
 

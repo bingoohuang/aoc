@@ -11,7 +11,7 @@ public class DirectOutput implements Output {
     private Joiner joiner = Joiner.on(',');
 
     @Override
-    public void write(AocContext aocContext, List<String> toFieldsValue) {
+    public void write(List<String> toFieldsValue) {
         content.append(joiner.join(toFieldsValue)).append("\n");
     }
 

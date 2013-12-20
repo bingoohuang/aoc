@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ConsoleOutput implements Output {
     @Override
-    public void write(AocContext aocContext, List<String> toFieldsValue) {
+    public void write(List<String> toFieldsValue) {
         System.out.println(toFieldsValue);
     }
 

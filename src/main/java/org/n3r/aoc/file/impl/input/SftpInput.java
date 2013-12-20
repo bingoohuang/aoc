@@ -1,6 +1,5 @@
 package org.n3r.aoc.file.impl.input;
 
-import org.n3r.aoc.AocContext;
 import org.n3r.aoc.utils.SftpDownloader;
 
 import java.io.InputStream;
@@ -11,7 +10,7 @@ public class SftpInput extends FtpInput {
     }
 
     @Override
-    public InputStream read(AocContext aocContext) {
-        return getInputStream(aocContext, new SftpDownloader());
+    public InputStream read() {
+        return getInputStream(new SftpDownloader());
     }
 }
