@@ -13,7 +13,7 @@ automatic orders checking framework
 
 对账文件校对功能，提供一种简单的`输入(Input)`、`处理过滤(Filter)`、`输出(Output)`模型，使用properties属性描述，示例如下：
 
-```
+```ini
 alias.Str=org.n3r.aoc.file.impl.validators.StrValidator
 alias.Int=org.n3r.aoc.file.impl.validators.IntValidator
 alias.Date=org.n3r.aoc.file.impl.validators.DateValidator
@@ -71,7 +71,7 @@ assertThat(output.getContent(), is("ID,INCOME_MONEY\n0001,100\n0002,102\n"));
 
 运行示例如下：
 
-```
+```ini
 alias.OutsideOrderChecker=org.n3r.aoc.check.impl.checker.OutsideOrderChecker
 alias.CurrentTimeMillisBatchNoCreator=org.n3r.aoc.check.impl.checker.CurrentTimeMillisBatchNoCreator
 alias.SqlDiffOut=org.n3r.aoc.check.impl.diff.SqlDiffOut
@@ -103,16 +103,16 @@ Oracle数据库建库脚本可以[点击这里](https://github.com/bingoohuang/a
 差异结果样例:
 > AOC_DIFF
 
-BATCHNO|LOS|ORS|LRS|BAL|TOTALLINE|STARTTIME|ENDTIME|COSTTIME|ACCOUNTDAY|ACCOUNTTYPE
--------|---|---|---|---|---------|---------|-------|--------|----------|-----------
-20131220100441184|1|1|2|0|4|2013-12-20 10:04:41|2013-12-20 10:04:41|0||
+|BATCHNO          |LOS|ORS|LRS|BAL|TOTALLINE|    STARTTIME      |    ENDTIME        |COSTTIME|ACCOUNTDAY|ACCOUNTTYPE|
+|-------          |---|---|---|---|---------|  ---------        |    ------         |--------|----------|-----------|
+|20131220100441184|1  |  1|  2|  0|        4|`2013-12-20 10:04:41`|`2013-12-20 10:04:41`|0       |NULL      |NULL       |
 
 > AOC_DIFF_DETAIL
 
 BATCHNO|DIFFTYPE|LEFTDATA|RIGHTDATA|DIFF|ORDERNO|DIFFCODE
--------|--------|--------|---------|----|-------|--------
-20131220100441184|LR|{"A":"a1","C":"203","D":"01"}|{"ID":"a1","PAY":"200","STATE":"00"}|{"C-PAY":"203-200","D-STATE":"01-00"}|a1|11
-20131220100441184|0R|NULL|{"ID":"a4","PAY":"300","STATE":"00"}|NULL|a4|NULL
-20131220100441184|LR|{"A":"a","C":"101","D":"01"}|{"ID":"a","PAY":"100","STATE":"00"}|{"C-PAY":"101-100","D-STATE":"01-00"}|a|11
-20131220100441184|L0|{"A":"a2","C":"300","D":"03"}|NULL|NULL|a2|NULL
+:-----:|:------:|:------:|:-------:|:--:|:-----:|:------:
+20131220100441184|LR|`{"A":"a1","C":"203","D":"01"}`|`{"ID":"a1","PAY":"200","STATE":"00"}`|  `{"C-PAY":"203-200","D-STATE":"01-00"}`|a1|11
+20131220100441184|0R|NULL|`{"ID":"a4","PAY":"300","STATE":"00"}`|NULL|a4|NULL
+20131220100441184|LR|`{"A":"a","C":"101","D":"01"}`|`{"ID":"a","PAY":"100","STATE":"00"}`|`{"C-PAY":"101-100","D-STATE":"01-00"}`|a|11
+20131220100441184|L0|`{"A":"a2","C":"300","D":"03"}`|NULL|NULL|a2|NULL
 
