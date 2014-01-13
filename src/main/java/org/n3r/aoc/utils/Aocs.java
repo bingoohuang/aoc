@@ -137,15 +137,15 @@ public class Aocs {
         return Substituters.parse(before, aocContext.getAocContext());
     }
 
-    public static RecordOrder mapRow(ResultSet rs, int rowNum)  throws SQLException {
-            ResultSetMetaData metaData = rs.getMetaData();
-            Object[] fieldsValue = new Object[metaData.getColumnCount()];
-            String[] fieldsName = new String[metaData.getColumnCount()];
-            for (int i = 0, ii = metaData.getColumnCount(); i < ii; ++i) {
-                fieldsName[i] = EqlUtils.lookupColumnName(metaData, i + 1);
-                fieldsValue[i] = EqlUtils.getResultSetValue(rs, i + 1);
-            }
+    public static RecordOrder mapRow(ResultSet rs, int rowNum) throws SQLException {
+        ResultSetMetaData metaData = rs.getMetaData();
+        Object[] fieldsValue = new Object[metaData.getColumnCount()];
+        String[] fieldsName = new String[metaData.getColumnCount()];
+        for (int i = 0, ii = metaData.getColumnCount(); i < ii; ++i) {
+            fieldsName[i] = EqlUtils.lookupColumnName(metaData, i + 1);
+            fieldsValue[i] = EqlUtils.getResultSetValue(rs, i + 1);
+        }
 
-            return new RecordOrder(fieldsValue, fieldsName, null);
+        return new RecordOrder(fieldsValue, fieldsName, null);
     }
 }

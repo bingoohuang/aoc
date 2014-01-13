@@ -54,7 +54,7 @@ public class TextFileFilter implements Filter, PropertiesAware {
 
     private void parseFieldsConfig(Properties rootProperties, Properties properties) {
         Properties fieldsProperties = Aocs.subProperties(properties, "data.fields");
-        String split = properties.getProperty("split", ",");
+        String split = fieldsProperties.getProperty("split", ",");
         splitter = Splitter.on(split).trimResults();
 
         loadFieldsFromDefinition(rootProperties, fieldsProperties);
