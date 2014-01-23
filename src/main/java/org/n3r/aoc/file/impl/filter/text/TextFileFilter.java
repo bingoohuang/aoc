@@ -34,8 +34,7 @@ public class TextFileFilter implements Filter, PropertiesAware {
     private Map<Integer, TextFileStat> statIndexMap = Maps.newHashMap(); // stat field index -> stat
     private int minStatFieldsNum = 0;
 
-    private Map<String, TextFileFieldFromDefinition> fromNameMap = Maps.newHashMap();
-    private Map<Integer, TextFileFieldFromDefinition> fromIndexMap = Maps.newHashMap();
+    private Map<String, TextFileFieldFromDefinition> fromNameMap = Maps.newLinkedHashMap();
     private List<TextFileFieldToDefinition> toList = Lists.newArrayList();
     private Splitter splitter;
     private int minFromFieldsNum = 0;
@@ -58,7 +57,7 @@ public class TextFileFilter implements Filter, PropertiesAware {
         splitter = Splitter.on(split).trimResults();
 
         loadFieldsFromDefinition(rootProperties, fieldsProperties);
-        loadFieldsToDefinitiion(rootProperties, fieldsProperties);
+        loadFieldsToDefinition(rootProperties, fieldsProperties);
     }
 
     private void parseStatConfig(Properties rootProperties, Properties properties) {
@@ -81,7 +80,7 @@ public class TextFileFilter implements Filter, PropertiesAware {
         }
     }
 
-    private void loadFieldsToDefinitiion(Properties rootProperties, Properties properties) {
+    private void loadFieldsToDefinition(Properties rootProperties, Properties properties) {
         String toConfig = properties.getProperty("to");
         if (isEmpty(toConfig)) throw new RuntimeException("to config should not be empty");
 
@@ -99,9 +98,8 @@ public class TextFileFilter implements Filter, PropertiesAware {
 
         for (String fieldName : Splitter.on(',').trimResults().split(fromConfig)) {
             TextFileFieldFromDefinition fieldFromDefinition = TextFileFieldFromDefinition
-                    .createField(rootProperties, fromProperties, fieldName);
+                    .createField(rootProperties, fromProperties, fieldName, minFromFieldsNum++);
             fromNameMap.put(fieldName, fieldFromDefinition);
-            fromIndexMap.put(minFromFieldsNum++, fieldFromDefinition);
         }
     }
 
@@ -159,9 +157,9 @@ public class TextFileFilter implements Filter, PropertiesAware {
 
         try {
             Map<String, TextFieldValue> fieldsValueMap = Maps.newHashMap();
-            for (int i = 0; i < minFromFieldsNum; ++i) {
-                TextFileFieldFromDefinition definition = fromIndexMap.get(i);
-                String fieldStringValue = fieldsValue.get(i);
+            for (Map.Entry<String, TextFileFieldFromDefinition> entry : fromNameMap.entrySet()) {
+                TextFileFieldFromDefinition definition = entry.getValue();
+                String fieldStringValue = fieldsValue.get(definition.getFieldIndex());
                 TextFieldValue value = definition.createValue(fieldStringValue);
                 value.validate();
                 fieldsValueMap.put(definition.getFieldName(), value);
@@ -180,14 +178,12 @@ public class TextFileFilter implements Filter, PropertiesAware {
             logger.error("error while parsing line no {} with content {}", lineNo, line);
             throw Throwables.propagate(e);
         }
-
-
     }
 
     private void accumuteStat(Map<String, TextFieldValue> fieldsValue) {
-        for (int i = 0; i < minFromFieldsNum; ++i) {
-            TextFileFieldFromDefinition definition = fromIndexMap.get(i);
-            TextFileStat textFileStat = statIndexMap.get(i);
+        for (Map.Entry<String, TextFileFieldFromDefinition> entry : fromNameMap.entrySet()) {
+            TextFileFieldFromDefinition definition = entry.getValue();
+            TextFileStat textFileStat = statIndexMap.get(definition.getFieldIndex());
             if (textFileStat != null) textFileStat.accumulate(fieldsValue);
         }
     }

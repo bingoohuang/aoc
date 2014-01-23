@@ -10,14 +10,17 @@ import java.util.Properties;
 
 public class TextFileFieldFromDefinition {
     private final String fieldName;
+    private final int fieldIndex;
     private TextFileFieldValidator[] validators;
 
-    public TextFileFieldFromDefinition(String fieldName, TextFileFieldValidator[] validators) {
+    public TextFileFieldFromDefinition(String fieldName, int fieldIndex, TextFileFieldValidator[] validators) {
         this.fieldName = fieldName;
+        this.fieldIndex = fieldIndex;
         this.validators = validators;
     }
 
-    public static TextFileFieldFromDefinition createField(Properties rootProperties, Properties properties, String fieldName) {
+    public static TextFileFieldFromDefinition createField(Properties rootProperties, Properties properties,
+                                                          String fieldName, int fieldIndex) {
         if (fieldName.equals("") || fieldName.equals("_")) {
             return new IgnoredTextFileFieldFromDefinition(fieldName);
         }
@@ -32,12 +35,16 @@ public class TextFileFieldFromDefinition {
             }
         }
 
-        return new TextFileFieldFromDefinition(fieldName, validators.size() == 0 ? null
+        return new TextFileFieldFromDefinition(fieldName, fieldIndex, validators.size() == 0 ? null
                 : validators.toArray(new TextFileFieldValidator[validators.size()]));
     }
 
     public String getFieldName() {
         return fieldName;
+    }
+
+    public int getFieldIndex() {
+        return fieldIndex;
     }
 
     public TextFieldValue createValue(String fieldStringValue) {

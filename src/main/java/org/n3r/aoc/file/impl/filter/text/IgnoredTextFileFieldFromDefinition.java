@@ -2,7 +2,7 @@ package org.n3r.aoc.file.impl.filter.text;
 
 public class IgnoredTextFileFieldFromDefinition extends TextFileFieldFromDefinition {
     public IgnoredTextFileFieldFromDefinition(String fieldName) {
-        super(fieldName, null);
+        super(fieldName, 0, null);
     }
 
     @Override
