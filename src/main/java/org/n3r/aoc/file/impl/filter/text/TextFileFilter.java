@@ -70,12 +70,12 @@ public class TextFileFilter implements Filter, PropertiesAware {
 
         String statSplit = properties.getProperty("stat.split", ",");
         statSplitter = Splitter.on(statSplit).trimResults();
-        Properties statProperites = Aocs.subProperties(properties, "stat.fields");
-        String statDefine = statProperites.getProperty("define");
+        Properties statProperties = Aocs.subProperties(properties, "stat.fields");
+        String statDefine = statProperties.getProperty("define");
         if (isEmpty(statDefine)) return;
 
         for (String statFieldName : Splitter.on(',').trimResults().split(statDefine)) {
-            TextFileStat textFileStat = TextFileStat.createStat(rootProperties, statProperites, statFieldName);
+            TextFileStat textFileStat = TextFileStat.createStat(rootProperties, statProperties, statFieldName);
             statIndexMap.put(minStatFieldsNum++, textFileStat);
         }
     }
