@@ -16,22 +16,27 @@ public class FtpUser implements User {
         this.login = login;
         this.pass = pass;
     }
+
     @Override
     public AuthorizationRequest authorize(final AuthorizationRequest authRequest) {
         return authRequest;
     }
+
     @Override
     public boolean getEnabled() {
         return true;
     }
+
     @Override
     public String getHomeDirectory() {
         return homePath;
     }
+
     @Override
     public int getMaxIdleTime() {
         return 0;
     }
+
     @Override
     public String getName() {
         return this.login;

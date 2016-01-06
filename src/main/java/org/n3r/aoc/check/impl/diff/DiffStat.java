@@ -91,6 +91,6 @@ public class DiffStat implements LifeCycle {
     }
 
     public int getCostTime() {
-        return (int) ((end - start)/1000);
+        return (int) ((end - start) / 1000);
     }
 }

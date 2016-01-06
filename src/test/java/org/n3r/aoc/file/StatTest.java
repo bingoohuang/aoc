@@ -42,7 +42,7 @@ public class StatTest {
 
         AocContext aocContext = new AocContext();
 
-        Processor processor =  Processor.fromProperties(config).aocContext(aocContext);
+        Processor processor = Processor.fromProperties(config).aocContext(aocContext);
 
         processor.process();
 

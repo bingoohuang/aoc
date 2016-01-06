@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import org.n3r.aoc.check.Order;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 

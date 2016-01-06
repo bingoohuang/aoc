@@ -23,7 +23,7 @@ public class ConsoleDiffOut implements DiffOut {
 
     @Override
     public void balance(Order left, Order right) {
-        System.out.println("balance, left:" +  left + ", right:" + right);
+        System.out.println("balance, left:" + left + ", right:" + right);
     }
 
     @Override

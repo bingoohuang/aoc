@@ -10,6 +10,7 @@ import java.io.InputStream;
 public interface Input extends LifeCycle {
     /**
      * 从输入中读取到输入流。
+     *
      * @return 输入流。
      */
     InputStream read();

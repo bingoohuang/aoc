@@ -6,6 +6,7 @@ package org.n3r.aoc;
 public interface LifeCycle {
     /**
      * 启动。
+     *
      * @param aocContext 上下文。
      */
     void startup(AocContext aocContext);

@@ -6,6 +6,7 @@ package org.n3r.aoc.check;
 public interface Order {
     /**
      * the keyValue of the order.
+     *
      * @return order keyValue.
      */
     String keyValue();

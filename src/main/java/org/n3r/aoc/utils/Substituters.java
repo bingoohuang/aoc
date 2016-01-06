@@ -14,17 +14,16 @@ import java.util.Set;
  * 2) ${variable:defaultValue}
  * 3) ${variabl${letter}} Recursive invocation
  * 4) mixed above
- * @author Bingoo Huang
  *
+ * @author Bingoo Huang
  */
 public abstract class Substituters {
     /**
      * Default Holder prefix: "${" .
-     * */
+     */
     public static final String DEF_HOLDER_PREFIX = "${";
     /**
      * Default Holder suffix: "}".
-     *
      */
     public static final String DEF_HOLDER_SUFFIX = "}";
     /**
@@ -50,6 +49,7 @@ public abstract class Substituters {
      * Parse the given String value recursively, to be able to resolve
      * nested Holders (when resolved property values in turn contain
      * Holders again).
+     *
      * @param strVal the String value to parse
      * @return 进行值填充后的字符串
      */
@@ -62,8 +62,9 @@ public abstract class Substituters {
      * Parse the given String value recursively, to be able to resolve
      * nested Holders (when resolved property values in turn contain
      * Holders again).
+     *
      * @param strVal the String value to parse
-     * @param props the Properties to resolve Holders against
+     * @param props  the Properties to resolve Holders against
      * @return 进行值填充后的字符串
      */
     public static String parse(String strVal, Map props) {
@@ -75,7 +76,8 @@ public abstract class Substituters {
      * Parse the given String value recursively, to be able to resolve
      * nested Holders (when resolved property values in turn contain
      * Holders again).
-     * @param strVal the String value to parse
+     *
+     * @param strVal           the String value to parse
      * @param ignoreBadHolders 是否忽略没有的占位符号
      * @return 进行值填充后的字符串
      */
@@ -88,12 +90,12 @@ public abstract class Substituters {
      * Parse the given String value recursively, to be able to resolve
      * nested Holders (when resolved property values in turn contain
      * Holders again).
-     * @param strVal the String value to parse
-     * @param props the Properties to resolve Holders against
-     * @param visitedHolders the Holders that have already been visited
-     * @param ignoreBadHolders
-     * during the current resolution attempt (used to detect circular references
-     * between Holders). Only non-null if we're parsing a nested Holder.
+     *
+     * @param strVal           the String value to parse
+     * @param props            the Properties to resolve Holders against
+     * @param visitedHolders   the Holders that have already been visited
+     * @param ignoreBadHolders during the current resolution attempt (used to detect circular references
+     *                         between Holders). Only non-null if we're parsing a nested Holder.
      * @return 进行值填充后的字符串
      */
     public static String parse(String strVal, Map props, Set<String> visitedHolders,
@@ -127,17 +129,14 @@ public abstract class Substituters {
                     buf.replace(startIndex, endIndex + DEF_HOLDER_SUFFIX_LEN, propVal);
 
                     startIndex = buf.indexOf(DEF_HOLDER_PREFIX, startIndex + propVal.length());
-                }
-                else if (ignoreBadHolders) {
+                } else if (ignoreBadHolders) {
                     // Proceed with unprocessed value.
                     startIndex = buf.indexOf(DEF_HOLDER_PREFIX, endIndex + DEF_HOLDER_SUFFIX_LEN);
-                }
-                else {
+                } else {
                     throw new RuntimeException("Could not resolve Placeholder '" + holder + "'");
                 }
                 visitedHolders.remove(holder);
-            }
-            else {
+            } else {
                 startIndex = -1;
             }
         }
@@ -153,16 +152,13 @@ public abstract class Substituters {
                 if (withinNestedHolder > 0) {
                     withinNestedHolder--;
                     index = index + DEF_HOLDER_SUFFIX_LEN;
-                }
-                else {
+                } else {
                     return index;
                 }
-            }
-            else if (substringMatch(buf, index, DEF_HOLDER_PREFIX)) {
+            } else if (substringMatch(buf, index, DEF_HOLDER_PREFIX)) {
                 withinNestedHolder++;
                 index = index + DEF_HOLDER_PREFIX_LEN;
-            }
-            else {
+            } else {
                 index++;
             }
         }
@@ -171,8 +167,9 @@ public abstract class Substituters {
 
     /**
      * Test whether the given string matches the given substring at the given index.
-     * @param str the original string (or StringBuffer)
-     * @param index the index in the original string to start matching against
+     *
+     * @param str       the original string (or StringBuffer)
+     * @param index     the index in the original string to start matching against
      * @param substring the substring to match at the given index
      * @return true/false
      */
@@ -187,7 +184,6 @@ public abstract class Substituters {
     }
 
 
-
     /**
      * Resolve the given Holder using the given properties, performing
      * a system properties check according to the given mode.
@@ -195,10 +191,11 @@ public abstract class Substituters {
      * (Holder, props)</code> before/after the system properties check.
      * <p>Subclasses can override this for custom resolution strategies,
      * including customized points for the system properties check.
-     * @param holder the Holder to resolve
-     * @param props the merged properties of this configurer
+     *
+     * @param holder       the Holder to resolve
+     * @param props        the merged properties of this configurer
      * @param sysPropsMode the system properties mode,
-     * according to the constants in this class
+     *                     according to the constants in this class
      * @return the resolved value, of null if none
      * @see System#getProperty
      */
@@ -225,8 +222,9 @@ public abstract class Substituters {
      * as fallback.
      * <p>Note that system properties will still be checked before respectively
      * after this method is invoked, according to the system properties mode.
-     * @param holder the Holder to resolve
-     * @param props the merged properties of this configurer
+     *
+     * @param holder       the Holder to resolve
+     * @param props        the merged properties of this configurer
      * @param defaultValue 默认值
      * @return the resolved value, of <code>null</code> if none
      */
@@ -235,8 +233,7 @@ public abstract class Substituters {
             Object value = props.get(holder);
             if (value != null) {
                 return "" + value;
-            }
-            else if (defaultValue != null) {
+            } else if (defaultValue != null) {
                 return defaultValue;
             }
         }
@@ -247,6 +244,7 @@ public abstract class Substituters {
     /**
      * Resolve the given keyValue as JVM system property, and optionally also as
      * system environment variable if no matching system property has been found.
+     *
      * @param key the Holder to resolve as system property keyValue
      * @return the system property value, or <code>null</code> if not found
      * @see System#getProperty(String)
@@ -259,8 +257,7 @@ public abstract class Substituters {
                 value = System.getenv(key);
             }
             return value;
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return null;
         }
     }

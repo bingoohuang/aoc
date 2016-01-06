@@ -11,14 +11,20 @@ import java.util.regex.Pattern;
  */
 public final class TimeSpanParser {
 
-    /** factors to calculate seconds from group index. */
+    /**
+     * factors to calculate seconds from group index.
+     */
     private static final List<TimeUnit> TIME_UNITS = Arrays.asList(TimeUnit.DAYS, TimeUnit.HOURS, TimeUnit.MINUTES,
             TimeUnit.SECONDS);
 
-    /** the pattern to recognize the different time span units and their values. */
+    /**
+     * the pattern to recognize the different time span units and their values.
+     */
     private static final Pattern PATTERN = Pattern.compile("^(?:(\\d+)d)?(?:(\\d+)h)?(?:(\\d+)m)?(?:(\\d+)s?)?$");
 
-    /** no construction, please. */
+    /**
+     * no construction, please.
+     */
     private TimeSpanParser() {
         ; // inhibit instantiation of utility class.
     }
@@ -26,7 +32,7 @@ public final class TimeSpanParser {
     /**
      * Parses a time span string and returns the time span according to the given unit. If the given time span string is
      * empty or null, the default value will be returned. Default time unit is seconds.
-     *
+     * <p/>
      * Example time spans (which are all equal in value) are:
      * <ul>
      * <li>86400</li>
@@ -35,25 +41,22 @@ public final class TimeSpanParser {
      * <li>24h</li>
      * <li>1d</li>
      * </ul>
-     *
+     * <p/>
      * Also mixed time spans can be used, but only in the correct order <b>d</b>, <b>h</b>, <b>m</b>, <b>s</b> e.g.:
      * <ul>
      * <li>1d12h10m45s</li>
      * <li>12h10s</li>
      * </ul>
-     *
+     * <p/>
      * For each of the above strings the result of parsing it with the <code>TimeUnit.MINUTES</code> would result in the
      * value of <code>1440</code>.
-     *
+     * <p/>
      * If the time span string could not be parsed or uses other suffixes than supported, an
      * {@link IllegalArgumentException} will be thrown.
      *
-     * @param timeSpan
-     *          the string representing the time span
-     * @param timeUnit
-     *          the {@link java.util.concurrent.TimeUnit} to be used
-     * @param defaultValue
-     *          the default value to use if the time span string was null or empty.
+     * @param timeSpan     the string representing the time span
+     * @param timeUnit     the {@link java.util.concurrent.TimeUnit} to be used
+     * @param defaultValue the default value to use if the time span string was null or empty.
      * @return the time span measured in the given {@link java.util.concurrent.TimeUnit}.
      */
     public static long parse(final String timeSpan, final TimeUnit timeUnit, final long defaultValue) {
